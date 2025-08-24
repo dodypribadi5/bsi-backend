@@ -1,7 +1,7 @@
 {
-  "name": "bsi-backend-vercel",
+  "name": "bsi-backend-vercel-fixed",
   "version": "1.0.0",
-  "description": "Backend Bank Syariah Indonesia untuk Vercel",
+  "description": "Backend Bank Syariah Indonesia untuk Vercel - Fixed Version",
   "scripts": {
     "dev": "vercel dev"
   },
