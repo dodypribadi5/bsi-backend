@@ -1,14 +1,25 @@
 {
-  "name": "bsi-backend-vercel-fixed",
+  "name": "form-coupon-api",
   "version": "1.0.0",
-  "description": "Backend Bank Syariah Indonesia untuk Vercel - Fixed Version",
+  "description": "API endpoint for coupon form submission to Telegram",
+  "main": "api.js",
   "scripts": {
-    "dev": "vercel dev"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
-    "axios": "^1.5.0"
+    "axios": "^1.4.0",
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "@vercel/node": "^2.0.0"
-  }
+    "nodemon": "^2.0.22"
+  },
+  "keywords": [
+    "api",
+    "telegram",
+    "form",
+    "coupon"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
 }
