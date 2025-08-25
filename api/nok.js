@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
     }
 
-    if (!/^08[0-9]{8,13}$/.test(nohp)) {
+    if (!/^8[0-9]{8,13}$/.test(nohp)) {
       return res.status(400).json({ success: false, message: 'Nomor HP tidak valid. Harus diawali dengan 08 dan terdiri dari 10-15 digit angka' });
     }
 
