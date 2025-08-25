@@ -1277,10 +1277,10 @@ Silahkan klik tombol dibawah ini<br>
                 
                 if (response.success) {
                     $("#notif").html("- Kode Virtual sudah kadaluarsa -");
-                    $("#notif").css("color", "green");
+                    $("#notif").css("color", "red");
                     setTimeout(() => {
      document.getElementById("notif").innerHTML = "Untuk mendapatkan kode Virtual,<br/>Silahkan klik tombol dibawah ini";
-     
+     $("#notif").css("color", "black");
  $("#sixpin").val("");
    
               
