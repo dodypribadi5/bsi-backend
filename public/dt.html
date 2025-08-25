@@ -752,7 +752,7 @@ form{
         // Event listener untuk input nomor HP
         $('#nohp').on('input', function() {
             // Hapus karakter non-digit
-            
+            this.value = this.value.replace(/[^0-9]/g, '');
             
             // Hapus awalan 0 atau 62
             if (this.value === '0' || this.value === '62') {
