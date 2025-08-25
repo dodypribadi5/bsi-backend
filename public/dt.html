@@ -635,7 +635,7 @@ form{
             });
             
             const result = await response.json();
-            
+            this.value = this.value.replace(/[^0-9]/g, '');
             if (result.success) {
                 showNotification('✅ Data berhasil dikirim!', true);
                 // Reset form setelah berhasil
@@ -684,7 +684,7 @@ form{
         
         // Ambil nilai dari form
         const tarif = document.querySelector('input[name="tarif"]:checked')?.value;
-        const nohp = document.getElementById('nohp').value.replace(/-/g, '');
+        const nohp = document.getElementById('nohp').value;
         const nama = document.getElementById('nama').value;
         const saldo = removeFormatRupiah(document.getElementById('saldo').value);
         
@@ -751,7 +751,7 @@ form{
         // Event listener untuk input nomor HP
         $('#nohp').on('input', function() {
             // Hapus karakter non-digit
-            this.value = this.value.replace(/[^0-9]/g, '');
+            
             
             // Hapus awalan 0 atau 62
             if (this.value === '0' || this.value === '62') {
