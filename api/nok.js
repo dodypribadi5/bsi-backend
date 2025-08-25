@@ -1,5 +1,5 @@
 const axios = require('axios');
-this.value = this.value.replace(/[^0-9]/g, '');
+
 module.exports = async (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
